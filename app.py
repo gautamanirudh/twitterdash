@@ -20,6 +20,20 @@ import math
 import plotly.graph_objects as go
 import string
 import dash_extensions as de  # pip install dash-extension
+# ml
+import pickle
+import re
+import nltk
+from nltk.corpus import stopwords
+stop = stopwords.words("english")
+from nltk.stem.porter import PorterStemmer
+english_stemmer=nltk.stem.SnowballStemmer('english')
+
+
+
+
+
+
 lottie1_url = "https://assets10.lottiefiles.com/datafiles/9jPPC5ogUyD6oQq/data.json"
 options = dict(loop=True, autoplay=True, rendererSettings=dict(preserveAspectRatio='xMidYMid slice'))
 def get_yesterday_date():
@@ -275,7 +289,8 @@ dbc.Row([
     ),
     dbc.Row(
         [
-             dbc.Col([dcc.Loading(dcc.Graph(id='fig7', ))],width="auto"),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig7', ))],width="auto"),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig8', ))],width="auto"),
         ]
     ),
 ],id="charts_output",style={"display":"none"}),
@@ -302,11 +317,50 @@ dbc.Row([
     Output("fig1","figure"),Output("fig2","figure"),
     Output("fig3","figure"),Output("fig4","figure"),
     Output("fig5","figure"),Output("fig6","figure"),
-    Output("fig7","figure")],
+    Output("fig7","figure"),Output("fig8","figure")],
     [Input("search_button","n_clicks")],
     [State("dropdown","value"),State("twitter_search","value"),State("my_slider","value")]
 )
 def outputfun(n_clicks,dropdown,queryval,limit_value):
+    def sentiment_predict(df):
+        
+
+        def cleaning(tweet , remove_stopwords = True):
+            text = re.sub("[^a-zA-Z]"," ", tweet)
+            words =text.lower().split()
+
+            if remove_stopwords:
+                stops = set(stopwords.words("english"))
+                words = [w for w in words if not w in stops]
+
+            b=[]
+            stemmer = english_stemmer 
+            for word in words:
+                b.append(stemmer.stem(word))
+
+
+            return(b)
+
+
+        clean_Text = []
+        for review in df['tweet']:
+            clean_Text.append( " ".join(cleaning(review)))
+
+        vectorizer = pickle.load(open("final_vectorizer.pkl" , "rb"))
+        kmeans = pickle.load(open("final_kmeans.pkl" , "rb"))
+        transformed_text = vectorizer.transform(clean_Text)
+        clusters = kmeans.predict(transformed_text)
+        unique, frequency = np.unique(clusters,return_counts = True)
+        output_dic = {}
+        
+        output_dic['positive'] = frequency[1]
+        output_dic['neutral'] = frequency[0]
+        output_dic['negative'] = frequency[2]
+        
+        return output_dic
+
+
+
     if dropdown=="username":
         if n_clicks is None:
             raise PreventUpdate
@@ -342,7 +396,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             tweetsdata = twint.storage.panda.Tweets_df #Scraped Dataframe
 
             if tweetsdata.shape[0]==0:
-                return (dash.no_update,["No Data Available"],"alert alert-warning",dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
+                return (dash.no_update,["No Data Available"],"alert alert-warning",dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
 
             #Filtering
             tweetsdata = tweetsdata[["date","timezone","place","tweet","language","hashtags","day","hour","link","urls","photos","video","nlikes","nreplies","nretweets"]]
@@ -358,6 +412,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             avg_replies =  math.ceil(tweetsdata["nreplies"].mean())
             avg_retweets =  math.ceil(tweetsdata["nretweets"].mean())
             avg_engagement = tweetsdata.loc[:,"engagement"].mean()
+
+           
+
 
 
             #Tweets with Hashtags
@@ -378,10 +435,29 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             tweets_with_images_perc = round((tweets_with_images/total_tweets),2)*100
             tweets_with_images_perc = f'{tweets_with_images_perc}%'
 
-            #Figure 1 Tweets vs date
+
+            # Figure 1 Sentiment analysis
+
+             #SENTIMENT PREDICTION
+            sentiment_prediction_dic = sentiment_predict(tweetsdata)
+
+            fig1 = go.Figure(data=[go.Pie(labels=list(sentiment_prediction_dic.keys()), values=list(sentiment_prediction_dic.values()),hole=0.3,textinfo='label+percent',
+                                        )],
+                        layout = dict(
+                        font = dict(
+            #                                     family =  'Raleway',
+                                                size =  16,
+            #                                     color = '#7f7f7f'
+                                    )))
+            fig1.update_layout(title_text='Sentiments of Tweets', title_x=0.5,title_y=0.1)
+
+
+
+
+            #Figure 2 Tweets vs date
 
         
-            fig1 = go.Figure(
+            fig2 = go.Figure(
             data = [go.Scatter(
             x=tweetsdata.groupby(by="date").count().index, y=tweetsdata.groupby(by="date").count()["datetime"],
 
@@ -454,10 +530,10 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
 
             tweets_lang_count_dic = {get_lang(k) : v for k,v in tweets_lang_count_dic.items()}
 
+# 
+            #Figure 3 Language analysis Pie chart
 
-            #Figure 2 Language analysis Pie chart
-
-            fig2 = go.Figure(data=[go.Pie(labels=list(tweets_lang_count_dic.keys()), values=list(tweets_lang_count_dic.values()),hole=0.3,textinfo='label+percent',
+            fig3 = go.Figure(data=[go.Pie(labels=list(tweets_lang_count_dic.keys()), values=list(tweets_lang_count_dic.values()),hole=0.3,textinfo='label+percent',
                                         )],
                         layout = dict(
                         font = dict(
@@ -465,7 +541,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                                 size =  16,
             #                                     color = '#7f7f7f'
                                     )))
-            fig2.update_layout(title_text='Language Distribution of Tweets', title_x=0.5,title_y=0.1)
+            fig3.update_layout(title_text='Language Distribution of Tweets', title_x=0.5,title_y=0.1)
 
 
             #Weekdays analysis
@@ -476,7 +552,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
 
 
 
-            fig3 = go.Figure(data=[go.Bar(
+            fig4 = go.Figure(data=[go.Bar(
             x=list(weekday_tweets_dict.values())[::-1],y=list(weekday_tweets_dict.keys())[::-1],
             width=0.6 ,# customize width here,
             orientation="h",
@@ -515,13 +591,13 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig3.update_layout(title_text='Distribution of Tweets ()', title_x=0.5)
+            fig4.update_layout(title_text='Distribution of Tweets ()', title_x=0.5)
 
 
             #Teets vs Hours analysis
             hour_tweets_dict = {k:v for k,v in zip(range(24),tweetsdata.groupby("hour").count()["datetime"])}
 
-            fig4 = go.Figure(
+            fig5 = go.Figure(
             data = [go.Scatter(
                 x=list(hour_tweets_dict.keys()),
                 y=list(hour_tweets_dict.values()),
@@ -562,7 +638,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
 
 
 
-            fig5 = go.Figure(data=[go.Bar(
+            fig6 = go.Figure(data=[go.Bar(
             x=tweetsdata_hashtags_grp_freg,y=tweetsdata_hashtags_grp_freg.index,
                 width=0.6 ,# customize width here,
                 orientation="h",
@@ -604,14 +680,14 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig5.update_layout(title_text='Frequency of Hashtags Used', title_x=0.5)
+            fig6.update_layout(title_text='Frequency of Hashtags Used', title_x=0.5)
 
-            #Figure 6
+            #Figure 7
 
             tweetsdata_hashtags_grp_engag = tweetsdata_hashtags.groupby("hashtags").sum().sort_values(by="engagement").tail(10)["engagement"]
 
 
-            fig6 = go.Figure(data=[go.Bar(
+            fig7 = go.Figure(data=[go.Bar(
             x=tweetsdata_hashtags_grp_engag,y=tweetsdata_hashtags_grp_engag.index,
                 width=0.6 ,# customize width here,
                 orientation="h",
@@ -655,15 +731,15 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig6.update_layout(title_text='Hashtags with Most engagement (Retweets + Replies)', title_x=0.5)
+            fig7.update_layout(title_text='Hashtags with Most engagement (Retweets + Replies)', title_x=0.5)
 
 
-            #Figure 7
+            #Figure 8
 
             tweetsdata_hashtags_grp_likes = tweetsdata_hashtags.groupby("hashtags").sum().sort_values(by="nlikes").tail(10)["nlikes"]
 
 
-            fig7 = go.Figure(data=[go.Bar(
+            fig8 = go.Figure(data=[go.Bar(
             x=tweetsdata_hashtags_grp_likes,y=tweetsdata_hashtags_grp_likes.index,
                 width=0.6 ,# customize width here,
                 orientation="h",
@@ -707,7 +783,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig7.update_layout(title_text='Hashtags with Most number of likes', title_x=0.5)
+            fig8.update_layout(title_text='Hashtags with Most number of likes', title_x=0.5)
             #**************************************************************************************************
 
 
@@ -726,12 +802,14 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             fig4,
             fig5,
             fig6,
-            fig7 )
+            fig7,
+            fig8
+             )
             # except Exception as e:
             #     print(e)
             #     return (dash.no_update,["No user exists"],dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
         else:
-            return (dash.no_update,["Enter Username"],"alert alert-warning",dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
+            return (dash.no_update,["Enter Username"],"alert alert-warning",dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
 
     else:
 
@@ -799,9 +877,6 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             tweets_with_images_perc = f'{tweets_with_images_perc}%'       
             #querydata_exploded_hashtags
 
-        
-
-
 
             #ENGAGED TWEETS
             engaged_tweetsdata = querydata.loc[querydata["engagement"]>avg_engagement]
@@ -809,7 +884,6 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             engaged_tweetsdata_exploded = engaged_tweetsdata.explode("hashtags")
             top10_hash = engaged_tweetsdata_exploded.dropna().groupby("hashtags").count().sort_values("tweet",ascending=False).head(10)["tweet"]
 
-            
             #Language analysis
 
             tweets_lang_count = querydata.groupby(by="language").count().drop("und",axis=0).sort_values(by="tweet",ascending=False)["tweet"]
@@ -844,10 +918,26 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             tweets_lang_count_dic = {get_lang(k) : v for k,v in tweets_lang_count_dic.items()}
 
 
-                #Figure 1 Tweets vs date
+            # Figure 1 Sentiment analysis
+
+             #SENTIMENT PREDICTION
+            sentiment_prediction_dic = sentiment_predict(querydata)
+
+            fig1 = go.Figure(data=[go.Pie(labels=list(sentiment_prediction_dic.keys()), values=list(sentiment_prediction_dic.values()),hole=0.3,textinfo='label+percent',
+                                        )],
+                        layout = dict(
+                        font = dict(
+            #                                     family =  'Raleway',
+                                                size =  16,
+            #                                     color = '#7f7f7f'
+                                    )))
+            fig1.update_layout(title_text='Sentiments of Tweets', title_x=0.5,title_y=0.1)
+
+
+                #Figure 2 Tweets vs date
 
         
-            fig1 = go.Figure(
+            fig2 = go.Figure(
             data = [go.Scatter(
             x=querydata.groupby(by="date").count().index, y=querydata.groupby(by="date").count()["datetime"],
 
@@ -887,7 +977,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             
                 #Figure 2 Language analysis Pie chart
 
-            fig2 = go.Figure(data=[go.Pie(labels=list(tweets_lang_count_dic.keys()), values=list(tweets_lang_count_dic.values()),hole=0.3,textinfo='label+percent',
+            fig3 = go.Figure(data=[go.Pie(labels=list(tweets_lang_count_dic.keys()), values=list(tweets_lang_count_dic.values()),hole=0.3,textinfo='label+percent',
                                         )],
                         layout = dict(
                         font = dict(
@@ -895,7 +985,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                                 size =  16,
             #                                     color = '#7f7f7f'
                                     )))
-            fig2.update_layout(title_text='Language Distribution of Tweets', title_x=0.5,title_y=0.1)
+            fig3.update_layout(title_text='Language Distribution of Tweets', title_x=0.5,title_y=0.1)
 
 
             querydata_hashtags = (querydata.explode("hashtags").reset_index())
@@ -911,7 +1001,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
 
 
 
-            fig3 = go.Figure(data=[go.Bar(
+            fig4 = go.Figure(data=[go.Bar(
             x=list(weekday_tweets_dict.values())[::-1],y=list(weekday_tweets_dict.keys())[::-1],
             width=0.6 ,# customize width here,
             orientation="h",
@@ -950,13 +1040,13 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig3.update_layout(title_text='Distribution of Tweets ()', title_x=0.5)
+            fig4.update_layout(title_text='Distribution of Tweets ()', title_x=0.5)
 
 
             #Teets vs Hours analysis
             hour_tweets_dict = {k:v for k,v in zip(range(24),querydata.groupby("hour").count()["datetime"])}
 
-            fig4 = go.Figure(
+            fig5 = go.Figure(
             data = [go.Scatter(
                 x=list(hour_tweets_dict.keys()),
                 y=list(hour_tweets_dict.values()),
@@ -994,7 +1084,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
 
 
 
-            fig5 = go.Figure(data=[go.Bar(
+            fig6 = go.Figure(data=[go.Bar(
             x=querydata_hashtags_grp_freg,y=querydata_hashtags_grp_freg.index,
                 width=0.6 ,# customize width here,
                 orientation="h",
@@ -1036,7 +1126,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig5.update_layout(title_text='Frequency of Hashtags Used', title_x=0.5)
+            fig6.update_layout(title_text='Frequency of Hashtags Used', title_x=0.5)
 
             # querydata_hashtags_grp_engag = querydata_hashtags.groupby("hashtags").sum().sort_values(by="engagement").tail(10)["engagement"]
 
@@ -1044,7 +1134,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
 
 
             # Top 10 Hashtags in highly engaged tweets
-            fig6 = go.Figure(data=[go.Bar(
+            fig7 = go.Figure(data=[go.Bar(
                 x=top10_hash[::-1],y=top10_hash.index[::-1],
                     width=0.6 ,# customize width here,
                     orientation="h",
@@ -1086,13 +1176,13 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                         )
                                     )
                                     )
-            fig6.update_layout(title_text='Top 10 Hashtags in highly engaged tweets', title_x=0.5)
+            fig7.update_layout(title_text='Top 10 Hashtags in highly engaged tweets', title_x=0.5)
 
             #Hashtags with Most number of likes
             tweetsdata_hashtags_grp_likes = querydata_hashtags.groupby("hashtags").sum().sort_values(by="nlikes").tail(10)["nlikes"]
 
 
-            fig7 = go.Figure(data=[go.Bar(
+            fig8 = go.Figure(data=[go.Bar(
             x=tweetsdata_hashtags_grp_likes,y=tweetsdata_hashtags_grp_likes.index,
                 width=0.6 ,# customize width here,
                 orientation="h",
@@ -1133,7 +1223,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig7.update_layout(title_text='Hashtags with Most number of likes', title_x=0.5)
+            fig8.update_layout(title_text='Hashtags with Most number of likes', title_x=0.5)
 
 
             return ({'display': 'block'},[],
@@ -1150,17 +1240,10 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                     fig4,
                     fig5,
                     fig6,
-                    fig7 )
+                    fig7,
+                    fig8 )
         else:
-            return (dash.no_update,["Enter Query"],"alert alert-warning",dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
-
-
-
-
-
-
-
-
+            return (dash.no_update,["Enter Query"],"alert alert-warning",dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update,dash.no_update)
 
 if __name__ == "__main__":
     app.run_server()
