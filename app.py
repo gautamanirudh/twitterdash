@@ -59,6 +59,7 @@ defaultfig = go.Figure(data=go.Scatter(x=x, y=x**2))
 
 # navbar
 
+
 PLOTLY_LOGO = "https://images.plot.ly/logo/new-branding/plotly-logomark.png"
 
 nav_item = dbc.NavItem(dbc.NavLink("Github Repository", href="https://github.com/gautamanirudh/twitterdash/tree/master", target="_blank", style={"color":"white"}))
@@ -152,7 +153,7 @@ dbc.Row(
         dbc.Col(
             
             [
-                html.P("Select Service",className="badge badge-primary"),
+                html.P("Enter Query",className="badge badge-primary"),
                 dbc.Input(id='twitter_search',
             placeholder='Search query'),
             ],width="4"
@@ -189,17 +190,20 @@ dbc.Row(
    ],className="pl-5 pr-5"
 ),
 dbc.Row(
-    dbc.Col(
+     dbc.Col(
 [
-    dbc.Button(id='search_button', children='Submit', outline=True),
+    html.Br(),
+    dbc.Button(id='search_button', children='Build Dashboard', outline=True),
 ],width=12
-    ),className="pl-5 pr-5"
+    ),className="pl-5 pr-5", style={"text-align": "center"},
 ),
 
 dbc.Row([
     
     dbc.Spinner(color="primary", type="grow",fullscreen=True,children=[
     html.Div([
+
+        html.Br(),
         dbc.Row([
             dbc.Col([
                 html.P("Total Tweets Fetched"),
@@ -231,66 +235,147 @@ dbc.Row([
 
             ],className="border border-info rounded"),
         ]),
-        dbc.Row(
+        html.Br(),
+        html.Br(),
+       dbc.Row(
 
             [
                 dbc.Col([
                     dbc.Row(
                         [
+                            html.Br(),
                             dbc.Col(de.Lottie(options=options, width="50%", height="50%", url=lottie1_url),),
                             dbc.Col( [html.H3(id="perc_tweets_hash"),
-                                        html.P("of tweets contains hashtags") 
-                                        ])
-                    
-                        ]
-                    )
+                                        html.P("of tweets contains hashtags"),
+                                        ]),
+
+                        ],
+                    ),
                 ],width=4),
 
                   dbc.Col([
                     dbc.Row(
                         [
+                            html.Br(),
                             dbc.Col(de.Lottie(options=options, width="50%", height="50%", url=lottie1_url),),
                             dbc.Col( [html.H3(id="perc_tweets_img"), html.P("of tweets contains images") ])
-                    
-                        ]
+
+                        ],
                     )
                 ],width=4),
 
                   dbc.Col([
                     dbc.Row(
                         [
+                            html.Br(),
                             dbc.Col(de.Lottie(options=options, width="50%", height="50%", url=lottie1_url),),
                             dbc.Col( [html.H3(id="perc_tweets_videos"), html.P("of tweets contains videos") ])
-                    
+
                         ]
                     )
                 ],width=4)
-                
+
             ]
         ),
+
         
-    dbc.Row(
+      dbc.Row(
         [
-            dbc.Col([dcc.Loading(dcc.Graph(id='fig1', ),)],width="auto"),
-             dbc.Col([dcc.Loading(dcc.Graph(id='fig2', ))],width="auto"),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig1', ),)],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                 'border-radius': '15px',
+                                 'box-shadow': '8px 8px 8px grey',
+                                 'background-color': '#f9f9f9',
+                                 'padding': '10px',
+                                 'margin-bottom': '10px',
+                                 'margin-right': '10px',
+                                 'margin-left': '40px'
+
+
+                                 }),
+             dbc.Col([dcc.Loading(dcc.Graph(id='fig2', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                  'border-radius': '15px',
+                                  'box-shadow': '8px 8px 8px grey',
+                                  'background-color': '#f9f9f9',
+                                  'padding': '10px',
+                                  'margin-bottom': '10px',
+                                  'margin-left': '80px'
+
+
+                                  }),
         ]
     ),
     dbc.Row(
         [
-            dbc.Col([dcc.Loading(dcc.Graph(id='fig3', ))],width="auto"),
-            dbc.Col([dcc.Loading(dcc.Graph(id='fig4', ))],width="auto"),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig3', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                 'border-radius': '15px',
+                                 'box-shadow': '8px 8px 8px grey',
+                                 'background-color': '#f9f9f9',
+                                 'padding': '10px',
+                                 'margin-bottom': '10px',
+                                 'margin-right': '10px',
+                                 'margin-left': '40px'
+
+
+                                 }),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig4', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                 'border-radius': '15px',
+                                 'box-shadow': '8px 8px 8px grey',
+                                 'background-color': '#f9f9f9',
+                                 'padding': '10px',
+                                 'margin-bottom': '10px',
+                                 'margin-left': '80px'
+
+
+                                 }),
         ]
     ),
     dbc.Row(
         [
-             dbc.Col([dcc.Loading(dcc.Graph(id='fig5', ))],width="auto"),
-              dbc.Col([dcc.Loading(dcc.Graph(id='fig6', ))],width="auto"),
+             dbc.Col([dcc.Loading(dcc.Graph(id='fig5', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                  'border-radius': '15px',
+                                  'box-shadow': '8px 8px 8px grey',
+                                  'background-color': '#f9f9f9',
+                                  'padding': '10px',
+                                  'margin-bottom': '10px',
+                                  'margin-right': '10px',
+                                  'margin-left': '40px'
+
+
+                                  }),
+              dbc.Col([dcc.Loading(dcc.Graph(id='fig6', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                   'border-radius': '15px',
+                                   'box-shadow': '8px 8px 8px grey',
+                                   'background-color': '#f9f9f9',
+                                   'padding': '10px',
+                                   'margin-bottom': '10px',
+                                   'margin-left': '80px'
+
+
+                                   }),
         ]
     ),
     dbc.Row(
         [
-            dbc.Col([dcc.Loading(dcc.Graph(id='fig7', ))],width="auto"),
-            dbc.Col([dcc.Loading(dcc.Graph(id='fig8', ))],width="auto"),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig7', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                 'border-radius': '15px',
+                                 'box-shadow': '8px 8px 8px grey',
+                                 'background-color': '#f9f9f9',
+                                 'padding': '10px',
+                                 'margin-bottom': '10px',
+                                 'margin-right': '10px',
+                                 'margin-left': '40px'
+
+                                 }),
+            dbc.Col([dcc.Loading(dcc.Graph(id='fig8', ))],width="auto",style={'width': '44%', 'display': 'inline-block',
+                                 'border-radius': '15px',
+                                 'box-shadow': '8px 8px 8px grey',
+                                 'background-color': '#f9f9f9',
+                                 'padding': '10px',
+                                 'margin-bottom': '10px',
+                                 'margin-left': '80px'
+
+
+                                 }),
         ]
     ),
 ],id="charts_output",style={"display":"none"}),
@@ -351,11 +436,15 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
         transformed_text = vectorizer.transform(clean_Text)
         clusters = kmeans.predict(transformed_text)
         unique, frequency = np.unique(clusters,return_counts = True)
-        output_dic = {}
+        output_dic = {
+            'Positive':0,
+            'Neutral':0,
+            'Negative':0
+        }
         
-        output_dic['positive'] = frequency[1]
-        output_dic['neutral'] = frequency[0]
-        output_dic['negative'] = frequency[2]
+        output_dic['Positive'] = frequency[1]
+        output_dic['Neutral'] = frequency[0]
+        output_dic['Negative'] = frequency[2]
         
         return output_dic
 
@@ -591,7 +680,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig4.update_layout(title_text='Distribution of Tweets ()', title_x=0.5)
+            fig4.update_layout(title_text='Distribution of Tweets - Weekdays', title_x=0.5)
 
 
             #Teets vs Hours analysis
@@ -648,9 +737,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             
             
                 marker=dict(
-                    color='rgba(50, 171, 90, 0.6)',
+                    # color='rgba(50, 171, 90, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 90, 1.0)',
+                        # color='rgba(50, 171, 90, 1.0)',
                         width=1),
                 ),
                 
@@ -676,7 +765,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     font = dict(
             #                                     family =  'Raleway',
                                                 size =  16,
-                                                color = '#7f7f7f'
+                                                # color = '#7f7f7f'
                                     )
                                 )
                                 )
@@ -698,9 +787,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             
             
                 marker=dict(
-                    color='rgba(50, 171, 90, 0.6)',
+                    # color='rgba(50, 171, 90, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 90, 1.0)',
+                        # color='rgba(50, 171, 90, 1.0)',
                         width=1),
                 ),
                 
@@ -727,7 +816,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     font = dict(
             #                                     family =  'Raleway',
                                                 size =  16,
-                                                color = '#7f7f7f'
+                                                # color = '#7f7f7f'
                                     )
                                 )
                                 )
@@ -750,9 +839,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             
             
                 marker=dict(
-                    color='rgba(50, 171, 90, 0.6)',
+                    # color='rgba(50, 171, 90, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 90, 1.0)',
+                        # color='rgba(50, 171, 90, 1.0)',
                         width=1),
                 ),
                 
@@ -779,7 +868,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     font = dict(
             #                                     family =  'Raleway',
                                                 size =  16,
-                                                color = '#7f7f7f'
+                                                # color = '#7f7f7f'
                                     )
                                 )
                                 )
@@ -1040,7 +1129,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     )
                                 )
                                 )
-            fig4.update_layout(title_text='Distribution of Tweets ()', title_x=0.5)
+            fig4.update_layout(title_text='Distribution of Tweets - Weekdays', title_x=0.5)
 
 
             #Teets vs Hours analysis
@@ -1094,9 +1183,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             
             
                 marker=dict(
-                    color='rgba(50, 171, 90, 0.6)',
+                    # color='rgba(50, 171, 90, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 90, 1.0)',
+                        # color='rgba(50, 171, 90, 1.0)',
                         width=1),
                 ),
                 
@@ -1122,7 +1211,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     font = dict(
             #                                     family =  'Raleway',
                                                 size =  16,
-                                                color = '#7f7f7f'
+                                                # color = '#7f7f7f'
                                     )
                                 )
                                 )
@@ -1144,9 +1233,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                 
                 
                     marker=dict(
-                        color='rgba(50, 171, 90, 0.6)',
+                        # color='rgba(50, 171, 90, 0.6)',
                         line=dict(
-                            color='rgba(50, 171, 90, 1.0)',
+                            # color='rgba(50, 171, 90, 1.0)',
                             width=1),
                     ),
                     
@@ -1172,7 +1261,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                         font = dict(
                 #                                     family =  'Raleway',
                                                     size =  16,
-                                                    color = '#7f7f7f'
+                                                    # color = '#7f7f7f'
                                         )
                                     )
                                     )
@@ -1193,9 +1282,9 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
             
             
                 marker=dict(
-                    color='rgba(50, 171, 90, 0.6)',
+                    # color='rgba(50, 171, 90, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 90, 1.0)',
+                        # color='rgba(50, 171, 90, 1.0)',
                         width=1),
                 ),
                 
@@ -1219,7 +1308,7 @@ def outputfun(n_clicks,dropdown,queryval,limit_value):
                                     font = dict(
             #                                     family =  'Raleway',
                                                 size =  16,
-                                                color = '#7f7f7f'
+                                                # color = '#7f7f7f'
                                     )
                                 )
                                 )
