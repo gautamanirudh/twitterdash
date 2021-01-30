@@ -409,13 +409,14 @@ dbc.Row([
 def outputfun(n_clicks,dropdown,queryval,limit_value):
     def sentiment_predict(df):
         
-
+        stopwords = pickle.load(open("stopwords.pkl" , "rb"))
+        english_stemmer = pickle.load(open("stemmer.pkl" , "rb"))
         def cleaning(tweet , remove_stopwords = True):
             text = re.sub("[^a-zA-Z]"," ", tweet)
             words =text.lower().split()
 
             if remove_stopwords:
-                stops = set(stopwords.words("english"))
+                stops = set(stopwords)
                 words = [w for w in words if not w in stops]
 
             b=[]
