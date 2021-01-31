@@ -1,4 +1,4 @@
-# Realtime Twitter Sentiment Analysis - Dashboard
+# Realtime Twitter Sentiment Analysis Dashboard
 <!-- Twitter Analytics Dashboard -->
 
 ### Description 
@@ -18,7 +18,22 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 ### Tech Stack 
 
 * [Twint](https://github.com/twintproject/twint "Twint") for fetching tweets from Twitter in realtime.
-* 
+* **Training the Sentiment Model**:
+    * [NLTK](https://github.com/twintproject/twint "NLTK") provides several modeuls for data-preprocessing and Natural Language Processing in Python.
+    * Twitter Sentiment Dataset from Kaggle was also reffered for gathering data to train the sentiment-model.
+    * [ScikitLearn](https://github.com/twintproject/twint "ScikitLearn") provides useful model libraries. K-Means Clustering,
+        * SkLeanr's TfIdf Vectorizer was used for preparing the embedded matrix.
+    * [Gensim](https://github.com/twintproject/twint "Gensim") provides fast utilites for training NLP models and vector embeddings. 
+        * Word2Vec model from gensim was used for vector embeddings.
+    * [Pickle](https://github.com/twintproject/twint "Pickle") was used for serialiozing trained objects and using them for prediction and production.
+
+* **Dashboard for Twitter Analysis**:
+    * [Flask](https://github.com/twintproject/twint "Flask") was used as backend for Dashboard.
+    * [Dash](https://github.com/twintproject/twint "Dash"), an HTML, CSS wrapper was used for laying out the UI for the Dashboard.
+    * [Plotly](https://github.com/twintproject/twint "Plotly") was used for all charts, plots anbd graphical visualizations on the dashboard.
+
+### Screenshots of the Dashboard
+
 ![dash](https://user-images.githubusercontent.com/56076028/106376026-4869f280-63b7-11eb-87fb-e1e3a6a4b817.jpeg)
 
 ![username](https://user-images.githubusercontent.com/56076028/106364418-dc56a280-6354-11eb-8bba-ee15e7cf6e31.jpeg)
