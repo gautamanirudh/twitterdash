@@ -93,7 +93,7 @@ For setting up the project on a local machine
     ```
 
 
-**Above Steps are sufficient for running the dashboard and analyzing realtime twitter data sentiment performance. But, for running the preprocessing and training model files, nltk data has to be downloaded to access the utilities. For that use the command: **
+***Above Steps are sufficient for running the dashboard and analyzing realtime twitter data sentiment performance. But, for running the preprocessing and training model files, nltk data has to be downloaded to access the utilities. For that use the command: ***
     ```
         nltk.download()
     ```
