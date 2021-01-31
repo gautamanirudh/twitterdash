@@ -1,5 +1,7 @@
-# twitterdash
+# Real time Twitter sentiment analysis
 Twitter Analytics Dashboard
+
+![dash](https://user-images.githubusercontent.com/56076028/106376026-4869f280-63b7-11eb-87fb-e1e3a6a4b817.jpeg)
 
 ![username](https://user-images.githubusercontent.com/56076028/106364418-dc56a280-6354-11eb-8bba-ee15e7cf6e31.jpeg)
 
