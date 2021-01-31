@@ -19,20 +19,24 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 
 * [Twint](https://github.com/twintproject/twint "Twint") package is used for fetching tweets from Twitter in realtime.
 * **Training the Sentiment Model**:
-    * [NLTK](https://github.com/nltk/nltk "NLTK") provides several modeuls for data-preprocessing and Natural Language Processing in Python.
-    * [Twitter Sentiment Dataset](https://www.kaggle.com/kazanova/sentiment140 "Twitter Sentiment Dataset" )from Kaggle was also reffered for gathering data to train the sentiment-model.
-    * [ScikitLearn](https://github.com/scikit-learn/scikit-learn "ScikitLearn") provides useful model libraries. K-Means Clustering,
+    * [NLTK](https://github.com/nltk/nltk "NLTK") provides several modules for data-preprocessing and Natural Language Processing in Python.
+        * Preprocessing utilities from NTLK like stopwords, porter stemmer were used during the Text preprocessing stage in preparing the training dataset to be fed into the model.
+    * [Twitter Sentiment Dataset](https://www.kaggle.com/kazanova/sentiment140 "Twitter Sentiment Dataset") from Kaggle is used for gathering data to train the sentiment-model.
+    * [ScikitLearn](https://github.com/scikit-learn/scikit-learn "ScikitLearn") provides useful model libraries.
         * SkLeanr's TfIdf Vectorizer was used for preparing the embedded matrix.
+        * Followed by it, K-Means Clustering model is used to cluster the semantically similar words from the embedded matrix and derive the cluster centers of three different sentiments.
     * [Gensim](https://github.com/RaRe-Technologies/gensim "Gensim") provides fast utilites for training NLP models and vector embeddings. 
         * Word2Vec model from gensim was used for vector embeddings.
-    * [Pickle](https://github.com/python/cpython/blob/master/Lib/pickle.py "Pickle") was used for serialiozing trained objects and using them for prediction and production.
+    * [Pickle](https://github.com/python/cpython/blob/master/Lib/pickle.py "Pickle") was used for serializing trained models and using them for prediction and production. The trained models were pickled and dumped in the directory for further use.
 
 * **Dashboard for Twitter Analysis**:
     * [Flask](https://github.com/pallets/flask "Flask") is used as backend for Dashboard.
-    * [Dash](https://github.com/plotly/dash "Dash"), an HTML, CSS wrapper is used for laying out the UI for the Dashboard.
-    * [Plotly](https://github.com/plotly "Plotly") is used for all charts, plots anbd graphical visualizations on the dashboard.
+    * [Dash](https://github.com/plotly/dash "Dash"), an HTML, CSS wrapper is used for laying out the UI for the Dashboard. Dash was predominantly used for setting up the Frontend of the Dashboard.
+    * [Plotly](https://github.com/plotly "Plotly") is used for all charts, plots and graphical visualizations on the dashboard.
 
 ### Screenshots of the Dashboard
+
+**Using a Twitter-Username for Analysing data**
 
 ![dash](https://user-images.githubusercontent.com/56076028/106376026-4869f280-63b7-11eb-87fb-e1e3a6a4b817.jpeg)
 
@@ -42,6 +46,48 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 
 ![username2](https://user-images.githubusercontent.com/56076028/106364448-1758d600-6355-11eb-83d2-835529be9c72.jpeg)
 
+
+**Using a Keyword for Analysing data**
+
 ![keyword](https://user-images.githubusercontent.com/56076028/106364458-29d30f80-6355-11eb-8d67-1ab1cc0faaf1.jpeg)
 
 ![keyword1](https://user-images.githubusercontent.com/56076028/106364473-3ce5df80-6355-11eb-8815-93a342eab3aa.jpeg)
+
+
+### Thought behind the Project
+
+### Setup Process
+
+For setting up the project on a local machine
+
+* Fork this repository.
+* Clone the repository using simple zip download or use the command
+    ```
+        git clone https://github.com/gautamanirudh/twitterdash.git
+    ```
+* Move to the master branch by using command
+    ```
+        git checkout  master
+    ```
+* Create a virtual environment for the project
+    ```
+        pip install virtualenv
+        virtualenv -p /usr/bin/python3 env_name
+    ```
+* Activate the Virtual environment
+    ```
+       source env_name/bin/activate
+    ```
+    Once the virtual environment is activated, the name of your virtual environment will appear on left side of terminal. This will let you know that the virtual environment is currently active. 
+
+* Install all the dependencies
+    ```
+       pip install -r requirements.txt
+    ```
+
+* To start the Dashboard app, run the command
+    ```
+        python app.py
+    ```
+
+
