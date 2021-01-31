@@ -11,7 +11,7 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 * Classification of Tweets based on their sentiments in real-time.
 * Interactive Charts and Graphs visualizing the corresponding twitter engagement.
 * Options to choose custom input attributes like range of dates, maximum number of tweets to be fetched, etc.
-* Dashboard presenting a complete twitter-performance-chart for the respective Userrname or keyword.
+* Dashboard presenting a complete twitter-performance-chart for the respective Username or keyword.
 * Analysis of user engagement on the Twitter, based on different languages used, number of retweets and distribution of tweets over weekdays.
 
 
@@ -56,6 +56,8 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 
 ### Thought behind the Project
 
+The project has several usecases in the industry ranging from, Analysing sentiment of Users on Twitter for a particular product or service, to managing and proctoring twitter engagement for tweets related a particular topic. The dashboard can act as a perfect tool for analysing market performance and further deciding the future of the service or product offered.
+
 ### Setup Process
 
 For setting up the project on a local machine
@@ -90,4 +92,9 @@ For setting up the project on a local machine
         python app.py
     ```
 
+
+**Above Steps are sufficient for running the dashboard and analyzing realtime twitter data sentiment performance. But, for running the preprocessing and training model files, nltk data has to be downloaded to access the utilities. For that use the command: **
+    ```
+        nltk.download()
+    ```
 
