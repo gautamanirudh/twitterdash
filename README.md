@@ -1,5 +1,12 @@
-# twitterdash
-Twitter Analytics Dashboard
+# Realtime Twitter Sentiment Analysis - Dashboard
+<!-- Twitter Analytics Dashboard -->
+
+### Description 
+
+Our project *Real Time Twitter Sentiment Analysis*, revolves around the idea of using unsuopervised Machine Learning approaches to classify the twitter data(tweets) into sentiment categories of POSITVE, NEGATIVE or NEUTRAL.
+
+### Characteristic functionalities
+
 
 
 ![dash](https://user-images.githubusercontent.com/56076028/106376026-4869f280-63b7-11eb-87fb-e1e3a6a4b817.jpeg)
