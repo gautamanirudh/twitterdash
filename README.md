@@ -56,7 +56,7 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 
 ### Thought behind the Project
 
-The project has several usecases in the industry ranging from, Analysing sentiment of Users on Twitter for a particular product or service, to managing and proctoring twitter engagement for tweets related a particular topic. The dashboard can act as a perfect tool for analysing market performance and further deciding the future of the service or product offered.
+The project has several use cases in the industry ranging from, Analysing the sentiment of Users on Twitter for a particular product or service, to managing and proctoring the twitter engagement for tweets related a particular topic. The dashboard can act as a perfect tool for analysing market performance and further deciding the future of the service or product offered.
 
 ### Setup Process
 
