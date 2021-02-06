@@ -3,7 +3,7 @@
 
 ### Description 
 
-Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea of using unsuopervised Machine Learning approaches to classify the twitter data(tweets) into sentiment categories of POSITVE, NEGATIVE or NEUTRAL.
+Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea of using unsuopervised Machine Learning approaches to classify the twitter data(tweets) into sentiment categories of POSITIVE, NEGATIVE or NEUTRAL.
 
 ### Characteristic functionalities
 
