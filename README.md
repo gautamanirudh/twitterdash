@@ -35,8 +35,8 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
     * [Plotly](https://github.com/plotly "Plotly") is used for all charts, plots and graphical visualizations on the dashboard.
 
 * **Determining the accuracy of the Sentiment Analysis Model**:
-    For determing the accuracy, a dataset was choosen and its polarity was determined using pretrained Supervised ML model Vader Sentiment Analyser and then the f1 score was calculated using both the labelled data and the predicted data
-    * The accuracy of the mode stands at: ```0.752```
+    For determining the accuracy, a dataset was choosen and its polarity was determined using pretrained Supervised ML model Vader Sentiment Analyser and then the F1 score was calculated using both the labelled data and the predicted data.
+    * The accuracy of the model stands at: ```0.752 or 75.2%```
 ### Screenshots of the Dashboard
 
 **Using a Twitter-Username for Analysing data**
