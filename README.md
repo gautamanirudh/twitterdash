@@ -34,6 +34,9 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
     * [Dash](https://github.com/plotly/dash "Dash"), an HTML, CSS wrapper is used for laying out the UI for the Dashboard. Dash was predominantly used for setting up the Frontend of the Dashboard.
     * [Plotly](https://github.com/plotly "Plotly") is used for all charts, plots and graphical visualizations on the dashboard.
 
+* **Determining the accuracy of the Sentiment Analysis Model**:
+    For determing the accuracy, a dataset was choosen and its polarity was determined using pretrained Supervised ML model Vader Sentiment Analyser and then the f1 score was calculated using both the labelled data and the predicted data
+    * The accuracy of the mode stands at: ```0.752```
 ### Screenshots of the Dashboard
 
 **Using a Twitter-Username for Analysing data**
@@ -94,6 +97,7 @@ For setting up the project on a local machine
 
 
 **Above Steps are sufficient for running the dashboard and analyzing realtime twitter data sentiment performance. But, for running the preprocessing and training model files, nltk data has to be downloaded to access the utilities. For that use the command:**
+
     ```
         nltk.download()
     ```
