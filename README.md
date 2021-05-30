@@ -36,7 +36,7 @@ Our project **Real Time Twitter Sentiment Analysis**, revolves around the idea o
 
 * **Determining the accuracy of the Sentiment Analysis Model**:
     For determining the accuracy, a dataset was choosen and its polarity was determined using pretrained Supervised ML model Vader Sentiment Analyser and then the F1 score was calculated using both the labelled data and the predicted data.
-    * The accuracy of the model stands at: ```0.752 or 75.2%```
+    * The accuracy of the model stands at: ```75.2%```
 ### Screenshots of the Dashboard
 
 **Using a Twitter-Username for Analysing data**
